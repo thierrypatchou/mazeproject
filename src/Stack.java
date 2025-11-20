@@ -1,18 +1,21 @@
 public class Stack {
 
+    public Stack() {
+
+    }
     private Space[] stack = new Space[10000];
-    private int nStackPointer = 0;
+    private int currentStackIndex = 0;
 
     public void push(Space sp){
-        stack[nStackPointer] = sp;
-        nStackPointer++;
+        stack[currentStackIndex] = sp;
+        currentStackIndex++;
     }
 
     public Space pop(){
-        if(nStackPointer == 0){
+        if(currentStackIndex == 0){
             return null;
         }else{
-            return stack[nStackPointer--];
+            return stack[currentStackIndex--];
         }
     }
 }
