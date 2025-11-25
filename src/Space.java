@@ -20,4 +20,12 @@ public class Space {
     public int getStringId(){
         return stringId;
     }
+    public int getxCoord(){
+        return xCoord;
+    }
+    public int getyCoord(){
+        return yCoord;
+    }
+
+
 }

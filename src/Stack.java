@@ -3,7 +3,7 @@ public class Stack {
     public Stack() {
 
     }
-    private Space[] stack = new Space[10000];
+    public Space[] stack = new Space[10000];
     private int currentStackIndex = 0;
 
     public void push(Space sp){

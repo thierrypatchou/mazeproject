@@ -6,8 +6,12 @@ import java.util.Scanner;
 
 public class Maze {
 
-    public Space[] spaces = new Space[10000];
-    Space maze[][] = new Space[ypos][xpos];
+    public Space spaces[];
+    public Space[][] maze = null;
+
+    public Maze(){
+        spaces = new Space[10000];
+    }
 
     public boolean loadMaze(String filename){
         boolean loaded = true;
@@ -15,6 +19,7 @@ public class Maze {
         try {
             int ypos = -1;
             int xpos= 0;
+            int spaceCount = -1;
             File file = new File(filename);
             Scanner scn = new Scanner(file);
             while (scn.hasNextLine()) {
@@ -23,26 +28,29 @@ public class Maze {
                 String[] tokens = line.split(",");
                 xpos = 0;
                 for(int i = 0; i < tokens.length; i++){
+                    spaceCount++;
                     if (tokens[i].equals("X")) {
-                        new Space(Space.spaceType.closed, i, ypos, xpos);
+                        spaces[spaceCount] = new Space(Space.spaceType.closed, spaceCount, ypos, xpos);
                         xpos++;
-                    }else if (tokens[i].equals("0")) {
-                        new Space(Space.spaceType.open, i, ypos, xpos);
+                    }else if (tokens[i].equals("O")) {
+                        spaces[spaceCount] = new Space(Space.spaceType.open, spaceCount, ypos, xpos);
                         xpos++;
                     }else if (tokens[i].equals("S")) {
-                        new Space(Space.spaceType.start, i, ypos, xpos);
+                        spaces[spaceCount] = new Space(Space.spaceType.start, spaceCount, ypos, xpos);
                         xpos++;
                     }else if (tokens[i].equals("E")) {
-                        new Space(Space.spaceType.end, i, ypos, xpos);
+                        spaces[spaceCount] = new Space(Space.spaceType.end, spaceCount, ypos, xpos);
                         xpos++;
                     }
                 }
 
             }
-            Space maze[][] = new Space[ypos][xpos];
+             maze = new Space[ypos][xpos];
+           int spacesIterator = 0;
             for(int i = 0; i < ypos; i++){
                 for(int j = 0; j < xpos; j++){
-
+                    maze[i][j] = spaces[spacesIterator];
+                    spacesIterator++;
                 }
             }
         }catch(IOException e){
@@ -52,5 +60,30 @@ public class Maze {
         return loaded;
 
     }
+
+    public Space findStartingSpace(Space[] spaces){
+            for(int i = 0; i < spaces.length; i++){
+                if(spaces[i].getType() == Space.spaceType.start){
+                    return spaces[i];
+                }
+            }
+            return null;
+    }
+
+    public Space getSpace(int id){
+        for(int i = 0; i<spaces.length; i++){
+            if(spaces[i] != null) {
+                Space test = spaces[i];
+                if (test.getStringId() == (id)) {
+                    return spaces[i];
+                }
+            }
+        }
+        return null;
+    }
+
+//    public boolean Solve(Space sp){
+//
+//    }
 
 }
