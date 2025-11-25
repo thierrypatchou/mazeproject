@@ -70,7 +70,7 @@ public class Maze {
             return null;
     }
 
-    public Space getSpace(int id){
+    public Space getSpaceFromID(int id){
         for(int i = 0; i<spaces.length; i++){
             if(spaces[i] != null) {
                 Space test = spaces[i];
@@ -82,8 +82,55 @@ public class Maze {
         return null;
     }
 
-//    public boolean Solve(Space sp){
-//
-//    }
+    public Space getSpaceFromCoords(int y, int x){
+        for(int i = 0; i<spaces.length; i++){
+            if(spaces[i] != null) {
+                Space test = spaces[i];
+                if (test.getyCoord() == y && test.getxCoord() == x) {
+                    return spaces[i];
+                }
+            }
+        }
+        return null;
+    }
+
+    boolean[][] visited = new boolean[maze.length][maze[0].length];
+    Stack path = new Stack();
+
+    public boolean Solve(Space sp){
+
+        int x = sp.getxCoord();
+        int y = sp.getyCoord();
+
+        if(sp.getType() == Space.spaceType.closed || visited[y][x]){
+            return false;
+        }
+        visited[y][x] = true;
+        path.push(sp);
+
+        if(sp.getType() == Space.spaceType.end){
+            return true;
+        }
+
+        //CHECKS RIGHT
+        if(Solve(getSpaceFromCoords(y, x+1))){
+            return true;
+        }
+        //CHECKS UP
+        if(Solve(getSpaceFromCoords(y+1, x))){
+            return true;
+        }
+        //CHECKS LEFT
+        if(Solve(getSpaceFromCoords(y, x-1))){
+            return true;
+        }
+        //CHECKS DOWN
+        if(Solve(getSpaceFromCoords(y-1, x))){
+            return true;
+        }
+        //IF NOTHING WORKS THEN BACKTRACK
+        path.pop();
+        return false;
+    }
 
 }
